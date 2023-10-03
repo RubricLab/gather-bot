@@ -1,5 +1,6 @@
 import {kv} from '@vercel/kv'
 import {NextResponse} from 'next/server'
+import {env} from '../../env.mjs'
 
 export async function GET() {
 	const dbUsers = await kv.get('users')
