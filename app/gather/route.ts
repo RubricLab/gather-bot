@@ -21,9 +21,11 @@ export async function GET() {
 
 	const gatherUsers = await gatherUsersResponse.json()
 
+	console.log(gatherUsers)
+
 	const users = gatherUsers.map(user => ({
 		name: user.name,
-		online: now - user.lastVisited._seconds < 60 * 20
+		online: now - user.lastVisited._seconds < 60 * 60
 	}))
 
 	console.log(users)
