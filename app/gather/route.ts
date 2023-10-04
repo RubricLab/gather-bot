@@ -18,8 +18,10 @@ export async function GET() {
 
 	const users = gatherUsers.map(user => ({
 		name: user.name,
-		online: now - user.lastVisited._seconds < 60 * 60
+		online: now - user.lastVisited._seconds < 60 * 10
 	}))
+
+	console.log(users)
 
 	const dbUsers = (await kv.get('users')) as {name: string; online: boolean}[]
 
@@ -29,7 +31,7 @@ export async function GET() {
 			console.log(`@${user.name} is now ${users.find(u => u.name === user.name).online ? 'online' : 'offline'}`)
 			await slackClient.chat.postMessage({
 				channel: env.SLACK_CHANNEL_ID,
-				text: `@${user.name} is now ${users.find(u => u.name === user.name).online ? 'online' : 'offline'}`
+				text: `@${user.name} ${users.find(u => u.name === user.name).online ? 'just hopped on Rubric Island! :tada:' : 'just left Rubric Island: cry: '}`
 			})
 		}
 	})
