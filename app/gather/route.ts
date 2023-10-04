@@ -36,7 +36,7 @@ export async function GET() {
 			console.log(`@${user.name} is now ${users.find(u => u.name === user.name).online ? 'online' : 'offline'}`)
 			await slackClient.chat.postMessage({
 				channel: env.SLACK_CHANNEL_ID,
-				text: `@${user.name} ${users.find(u => u.name === user.name).online ? 'just hopped on Rubric Island! :tada:' : 'just left Rubric Island: cry: '}`
+				text: `@${user.name} ${users.find(u => u.name === user.name).online ? 'just hopped on Rubric Island! :tada:' : 'just left Rubric Island :cry:'}`
 			})
 		}
 	})
