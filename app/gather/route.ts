@@ -14,6 +14,11 @@ export async function GET() {
 
 	const now = Math.floor(Date.now() / 1000)
 
+	if (gatherUsersResponse.status !== 200) {
+		console.error(await gatherUsersResponse.text())
+		return new NextResponse('error')
+	}
+
 	const gatherUsers = await gatherUsersResponse.json()
 
 	const users = gatherUsers.map(user => ({
