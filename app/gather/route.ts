@@ -1,15 +1,38 @@
+import {WebClient} from '@slack/web-api'
 import {kv} from '@vercel/kv'
 import {NextResponse} from 'next/server'
 import {env} from '../../env.mjs'
 
+const slackClient = new WebClient(env.SLACK_BOT_TOKEN)
+
 export async function GET() {
-	const dbUsers = await kv.get('users')
+	const gatherUsersResponse = await fetch(`https://api.gather.town/api/v2/spaces/${env.GATHER_SPACE_ID}/users`, {
+		headers: {
+			Authorization: `Bearer ${env.GATHER_BEARER_TOKEN}`
+		}
+	})
 
-	console.log(dbUsers)
+	const now = Math.floor(Date.now() / 1000)
 
-	const gatherUsers = await fetch(`https://api.gather.town/api/v2/spaces/${env.GATHER_SPACE_ID}/users`)
+	const gatherUsers = await gatherUsersResponse.json()
 
-	console.log(gatherUsers)
+	const users = gatherUsers.map(user => ({
+		name: user.name,
+		online: now - user.lastVisited._seconds < 60 * 60
+	}))
+
+	const dbUsers = (await kv.get('users')) as {name: string; online: boolean}[]
+
+	await kv.set('users', JSON.stringify(users))
+	dbUsers.map(async user => {
+		if (user.online !== users.find(u => u.name === user.name).online) {
+			console.log(`@${user.name} is now ${users.find(u => u.name === user.name).online ? 'online' : 'offline'}`)
+			await slackClient.chat.postMessage({
+				channel: env.SLACK_CHANNEL_ID,
+				text: `@${user.name} is now ${users.find(u => u.name === user.name).online ? 'online' : 'offline'}`
+			})
+		}
+	})
 
 	return new NextResponse('ok')
 }

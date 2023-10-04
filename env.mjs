@@ -17,7 +17,13 @@ export const env = createEnv({
 	 */
 	runtimeEnv: {
 		GATHER_BEARER_TOKEN: process.env.GATHER_BEARER_TOKEN,
-		GATHER_SPACE_ID: process.env.GATHER_SPACE_ID
+		GATHER_SPACE_ID: process.env.GATHER_SPACE_ID,
+		KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
+		KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
+		KV_REST_API_URL: process.env.KV_REST_API_URL,
+		KV_URL: process.env.KV_URL,
+		SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
+		SLACK_CHANNEL_ID: process.env.SLACK_CHANNEL_ID
 	},
 
 	/**
@@ -26,6 +32,12 @@ export const env = createEnv({
 	 */
 	server: {
 		GATHER_BEARER_TOKEN: z.string(),
-		GATHER_SPACE_ID: z.string()
+		GATHER_SPACE_ID: z.string(),
+		KV_REST_API_READ_ONLY_TOKEN: z.string(),
+		KV_REST_API_TOKEN: z.string(),
+		KV_REST_API_URL: z.string(),
+		KV_URL: z.string(),
+		SLACK_BOT_TOKEN: z.string(),
+		SLACK_CHANNEL_ID: z.string()
 	}
 })
