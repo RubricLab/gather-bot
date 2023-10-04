@@ -16,7 +16,7 @@ export async function GET() {
 
 	if (gatherUsersResponse.status !== 200) {
 		console.error(await gatherUsersResponse.text())
-		return new NextResponse('error')
+		throw new Error('Failed to fetch users from Gather')
 	}
 
 	const gatherUsers = await gatherUsersResponse.json()
