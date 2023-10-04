@@ -23,7 +23,7 @@ export async function GET() {
 
 	const users = gatherUsers.map(user => ({
 		name: user.name,
-		online: now - user.lastVisited._seconds < 60 * 60
+		online: now - user.lastVisited._seconds < 60 * 10
 	}))
 
 	console.log(users)
